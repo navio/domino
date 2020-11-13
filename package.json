@@ -1,0 +1,26 @@
+{
+  "name": "domino",
+  "version": "1.0.0",
+  "description": "Domino Engine",
+  "main": "index.js",
+  "scripts": {
+    "start":"npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/navio/domino"
+  },
+  "keywords": [
+    "Domino",
+    "Cuban",
+    "Mexican",
+    "Trains",
+    "Tren"
+  ],
+  "author": "Alberto Navarro",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.0.5"
+  }
+}
