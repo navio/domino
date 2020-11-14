@@ -42,7 +42,10 @@ export class Tile {
   }
 
   value = () => [...this.values];
-  
+
+  valueOf() {
+    return this.values.map(Number);
+  }
 
   toString = () => `[${this.values[0]},${this.values[1]}]`;
 
@@ -73,10 +76,12 @@ export type Suite = {
 
 export type Hand = Set<Tile>;
 
-export const generateSuite = () => {
+export const generateSuite = (amount?: Pips) => {
   const box = new Map<string, Tile>();
   for (const suite in Pips) {
+    if (amount && Number(Pips[suite]) > Number(amount)) break;
     for (const value in Pips) {
+      if (amount && Number(Pips[value]) > Number(amount)) break;
       const tile: Tile = new Tile(Pips[suite], Pips[value]);
       const key =
         Pips[suite] > Pips[value]
@@ -89,32 +94,32 @@ export const generateSuite = () => {
 };
 
 export class Box {
-    private box: Tile[];
-    constructor(box?: Map<string, Tile>){
-            this.box = [...(box || generateSuite()).values()];
+  private box: Tile[];
+  constructor(options: { box?: Map<string, Tile>; level?: Pips } = {}) {
+    this.box = [...(options.box || generateSuite(options.level)).values()];
+  }
+
+  next = (amount: number = 1) => {
+    const drawed: Tile[] = [];
+    while (amount > 0) {
+      const tile = this.box.pop();
+      drawed.push(tile);
+      amount--;
     }
+    return drawed;
+  };
 
-    next = (amount: number = 1 ) => {
-        const drawed:Tile[] = [];
-        while(amount > 0 ){
-            const tile = this.box.pop();
-            drawed.push(tile);
-            amount--;
-        }
-        return drawed;
+  draw = () => this.box.splice(~~(Math.random() * this.box.length), 1);
+
+  suffle = () => {
+    const shuffled: Tile[] = [];
+    while (this.box.length !== 0) {
+      const randomIndex = ~~(Math.random() * this.box.length);
+      shuffled.push(this.box[randomIndex]);
+      this.box.splice(randomIndex, 1);
     }
+    this.box = shuffled;
+  };
 
-    draw = () => this.box.splice(~~(Math.random() * this.box.length), 1);
-
-    suffle = () => {
-       const shuffled: Tile[] = [];
-       while(this.box.length !== 0){
-           const randomIndex = ~~(Math.random() * this.box.length);
-           shuffled.push(this.box[randomIndex]);
-           this.box.splice(randomIndex, 1); 
-       }
-       this.box = shuffled;
-    }
-
-    valueOf = () => [...this.box]
+  valueOf = () => [...this.box];
 }

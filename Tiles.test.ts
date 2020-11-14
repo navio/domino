@@ -1,9 +1,14 @@
-import {generateSuite, Box} from './Tiles';
+import {generateSuite, Box, Pips} from './Tiles';
 const box = new Box();
 
 test('Generate 91 Tiles', () => {
     expect([...box.valueOf()].length).toBe(91);
   });
+
+test('Generates a 6 Level Box with 28 Tiles', () => {
+    const boxOfSix = new Box({level: Pips.six});
+    expect( [...boxOfSix.valueOf()].length).toBe(28);
+})
 
 test('It draws one Tile', () => {
     expect(box.draw().length).toBe(1);
