@@ -78,18 +78,22 @@ export type Hand = Set<Tile>;
 
 export const generateSuite = (amount?: Pips) => {
   const box = new Map<string, Tile>();
-  for (const suite in Pips) {
-    if (amount && Number(Pips[suite]) > Number(amount)) break;
-    for (const value in Pips) {
-      if (amount && Number(Pips[value]) > Number(amount)) break;
-      const tile: Tile = new Tile(Pips[suite], Pips[value]);
-      const key =
-        Pips[suite] > Pips[value]
-          ? `${Pips[suite]},${Pips[value]}`
-          : `${Pips[value]},${Pips[suite]}`;
-      box.set(key, tile);
+  const max = Number(amount || Values[Values.length - 1]);
+  for (let suiteIndex = max; suiteIndex > -1; suiteIndex--) {
+
+    const suite = Pips[ValuesToKeys[suiteIndex]];
+    const suiteTile = new Tile(suite, suite);
+
+    box.set(suiteTile.toString(), suiteTile);
+
+    for (let valueIndex = suiteIndex - 1; valueIndex > -1; valueIndex--) {
+      const value = Pips[ValuesToKeys[valueIndex]];
+      const tile: Tile = new Tile(suite, value);
+
+      box.set(tile.toString(), tile);
     }
   }
+
   return box;
 };
 

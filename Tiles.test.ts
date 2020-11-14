@@ -40,5 +40,3 @@ test('Comparison of tiles works', () => {
     expect(one).toEqual(two);
     expect(two).not.toEqual(three);
 })
-
-
