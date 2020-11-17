@@ -1,17 +1,18 @@
 {
-  "name": "domino-engine",
+  "name": "dominos",
   "version": "1.0.0",
   "description": "Domino Engine to create Domino Games. The library would generate all the tiles and structures to easily create one of the multiple domino games.",
   "main": "dist/index.js",
   "source": "./Tiles.ts",
   "scripts": {
-    "start": "npx tsc",
+    "start": "npx microbundle",
     "test": "npx jest --coverage"
   },
   "repository": {
     "type": "git",
     "url": "github.com/navio/domino"
   },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/navio" },
   "keywords": [
     "Domino",
     "Cuban",
