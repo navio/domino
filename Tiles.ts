@@ -43,10 +43,6 @@ export class Tile {
 
   value = () => [...this.values];
 
-  valueOf() {
-    return this.values.map(Number);
-  }
-
   toString = () => `[${this.values[0]},${this.values[1]}]`;
 
   has = (match: Pips) => this.values.includes(match);
@@ -59,9 +55,12 @@ export class Tile {
     return this.isDouble ? this.connected.size <= 4 : this.connected.size <= 2;
   };
 
-  attach = (tile: Tile, value: Pips) => {
-    if (this.canAttach(tile)) {
+  attach = (tile: Tile, value: Pips, options: { clean?: boolean } = {}) => {
+    if (this.canAttach(tile) && tile.canAttach(this)) {
       this.connected.set(value, tile);
+      if (!options.clean) {
+        tile.attach(this, value, { clean: true });
+      }
       return true;
     }
     return false;
@@ -77,20 +76,19 @@ export type Suite = {
 export type Hand = Set<Tile>;
 
 export const generateSuite = (amount?: Pips) => {
-  const box = new Map<string, Tile>();
+  const box = new Set<Tile>();
   const max = Number(amount || Values[Values.length - 1]);
   for (let suiteIndex = max; suiteIndex > -1; suiteIndex--) {
-
     const suite = Pips[ValuesToKeys[suiteIndex]];
     const suiteTile = new Tile(suite, suite);
 
-    box.set(suiteTile.toString(), suiteTile);
+    box.add(suiteTile);
 
     for (let valueIndex = suiteIndex - 1; valueIndex > -1; valueIndex--) {
       const value = Pips[ValuesToKeys[valueIndex]];
       const tile: Tile = new Tile(suite, value);
 
-      box.set(tile.toString(), tile);
+      box.add(tile);
     }
   }
 
@@ -99,7 +97,7 @@ export const generateSuite = (amount?: Pips) => {
 
 export class Box {
   private box: Tile[];
-  constructor(options: { box?: Map<string, Tile>; level?: Pips } = {}) {
+  constructor(options: { box?: Set<Tile>; level?: Pips } = {}) {
     this.box = [...(options.box || generateSuite(options.level)).values()];
   }
 

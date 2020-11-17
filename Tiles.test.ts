@@ -1,4 +1,4 @@
-import {generateSuite, Box, Pips} from './Tiles';
+import {generateSuite, Box, Pips, Tile} from './Tiles';
 const box = new Box();
 
 test('Generate 91 Tiles', () => {
@@ -39,4 +39,24 @@ test('Comparison of tiles works', () => {
     const three = box.draw();
     expect(one).toEqual(two);
     expect(two).not.toEqual(three);
-})
+});
+
+test('Tiles: is Tile Attachable?', () => {
+    const sameEnd = Pips.two;
+    const tile1 = new Tile(Pips.twelve, sameEnd);
+    const tile2 = new Tile(Pips.eight, sameEnd);
+    expect(tile1.canAttach(tile2)).toBe(true);
+});
+
+test('Tiles: Attach tiles', () => {
+    const sameEnd = Pips.two;
+    const tile1 = new Tile(Pips.twelve, sameEnd);
+    const tile2 = new Tile(Pips.eight, sameEnd);
+    const tile3 = new Tile(Pips.tree, sameEnd);
+    const tile4 = new Tile(Pips.tree, sameEnd);
+    expect(tile1.attach(tile2,sameEnd)).toBe(true);
+    expect(tile1.attached().length).toBe(1);
+    expect(tile2.attached().length).toBe(1);
+    expect(tile1.attach(tile3,sameEnd)).toBe(true);
+    // expect(tile1.canAttach(tile4)).toBe(false);
+});
