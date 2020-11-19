@@ -12,7 +12,6 @@
     "type": "git",
     "url": "github.com/navio/domino"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/navio" },
   "keywords": [
     "Domino",
     "Cuban",
