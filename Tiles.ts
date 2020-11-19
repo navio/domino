@@ -31,7 +31,7 @@ export const KeysToValues = Object.keys(Pips).reduce((acum, pip) => {
 export class Tile {
   private values: [Pips, Pips];
   private isDouble: boolean = false;
-  private connected = new Map<Pips, Tile>();
+  private connected = new Set<{ value: Pips; tile: Tile }>();
   public isRoot: boolean = false;
 
   constructor(one: Pips, two: Pips) {
@@ -56,8 +56,13 @@ export class Tile {
   };
 
   attach = (tile: Tile, value: Pips, options: { clean?: boolean } = {}) => {
-    if (this.canAttach(tile) && tile.canAttach(this)) {
-      this.connected.set(value, tile);
+    const ofSameValue = [...this.connected].filter(
+      (currentTile) => currentTile.value === value
+    ).length;
+    const enoughSpace = this.isDouble ? ofSameValue < 3 : ofSameValue < 2;
+
+    if (this.canAttach(tile) && tile.canAttach(this) && enoughSpace) {
+      this.connected.add({ value, tile });
       if (!options.clean) {
         tile.attach(this, value, { clean: true });
       }

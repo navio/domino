@@ -54,9 +54,13 @@ test('Tiles: Attach tiles', () => {
     const tile2 = new Tile(Pips.eight, sameEnd);
     const tile3 = new Tile(Pips.tree, sameEnd);
     const tile4 = new Tile(Pips.tree, sameEnd);
+    const tile5 = new Tile(Pips.tree, Pips.tree);
     expect(tile1.attach(tile2,sameEnd)).toBe(true);
     expect(tile1.attached().length).toBe(1);
     expect(tile2.attached().length).toBe(1);
     expect(tile1.attach(tile3,sameEnd)).toBe(true);
-    // expect(tile1.canAttach(tile4)).toBe(false);
+    expect(tile1.attached().length).toBe(2);
+    expect(tile1.canAttach(tile4)).toBe(true);
+    expect(tile1.attach(tile4,sameEnd)).toBe(false);
+    expect(tile1.canAttach(tile5)).toBe(false);
 });
