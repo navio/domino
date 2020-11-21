@@ -1,6 +1,6 @@
 {
   "name": "domino-engine",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Domino Engine to create Domino Games. The library would generate all the tiles and structures to easily create one of the multiple domino games.",
   "main": "dist/index.js",
   "module": "dist/index.m.js",  
